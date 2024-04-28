@@ -1,0 +1,27 @@
+### ------- Конфигурация Проекта ------- ###
+server:
+  port: 8060
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+
+# config for Zipkin
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        # Здесь будет определены: Контроллеры + API endpoints
+#        - id: some-service
+#          uri: lb://some-service
+#          predicates:
+#            - Path=/some-service/api/client/**
+
+
+
