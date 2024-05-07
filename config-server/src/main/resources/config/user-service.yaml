@@ -11,7 +11,7 @@ eureka:
 db:
   username: postgres
   password: 123456789
-  schema: jwt_security
+  schema: tilashar_user_data
 
 spring:
   datasource:
