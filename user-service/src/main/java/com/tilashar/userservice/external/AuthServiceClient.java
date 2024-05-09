@@ -13,6 +13,7 @@ public class AuthServiceClient {
         this.webClient = webClientBuilder
                 .filter((request, next) -> {
                     System.out.println("Request: " + request.method() + " " + request.url());
+                    System.out.println("Headers: " + request.headers());
                     return next.exchange(request);
                 })
                 .build();

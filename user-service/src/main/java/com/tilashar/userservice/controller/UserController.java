@@ -1,14 +1,10 @@
 package com.tilashar.userservice.controller;
 
-import com.tilashar.userservice.model.Role;
 import com.tilashar.userservice.model.User;
 import com.tilashar.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,12 +18,15 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> saveUser(@RequestBody User user) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(user));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    public User saveUser(@RequestBody User user) {
+        return userService.saveUser(user);
+    }
+
+    @GetMapping("/{email}")
+    public Optional<User> getByEmail(@PathVariable String email) {
+        Optional<User> user = userService.getByEmail(email);
+        System.out.println(user);
+        return user;
     }
     
 }

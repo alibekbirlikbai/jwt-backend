@@ -1,6 +1,6 @@
 package com.tilashar.authservice.model.dto;
 
-import com.tilashar.authservice.model.RegisterRequest;
+import com.tilashar.authservice.model.AuthRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,22 +14,22 @@ import java.util.Collections;
 
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class UserDetailsDTO implements UserDetails {
-    private RegisterRequest registerRequest;
+    private AuthRequest authRequest;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String role = registerRequest.getRole();
+        String role = authRequest.getRole();
         return Collections.singleton(new SimpleGrantedAuthority(role));
     }
 
     @Override
     public String getPassword() {
-        return registerRequest.getPassword();
+        return authRequest.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return registerRequest.getEmail();
+        return authRequest.getEmail();
     }
 
     @Override

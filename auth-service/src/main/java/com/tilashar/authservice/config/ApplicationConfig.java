@@ -3,7 +3,6 @@ package com.tilashar.authservice.config;
 import com.tilashar.authservice.external.UserServiceClient;
 import com.tilashar.authservice.model.dto.UserDetailsDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,7 +23,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userServiceClient.findUser_byEmail(username)
-                .map(UserDetailsDTO::new) // Создаем UserDetailsDTO на основе RegisterRequest
+                .map(userDetails -> new UserDetailsDTO(userDetails.getAuthRequest())) // Создаем UserDetailsDTO на основе AuthRequest
                 .switchIfEmpty(Mono.error(new UsernameNotFoundException("User not found")))
                 .block();
     }
