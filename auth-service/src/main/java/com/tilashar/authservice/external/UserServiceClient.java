@@ -24,4 +24,31 @@ public class UserServiceClient {
     }
 
     // Методы для запросов к user-service
+    // http://localhost:8081/user-service/api/users
+    public Mono<UserDetailsDTO> saveUser(RegisterRequest request) {
+        return webClient.post()
+                .uri(uriBuilder ->
+                        uriBuilder.scheme("http")
+                                .host("localhost")
+                                .port(8081)
+                                .path("/user-service/api/users")
+                                .build())
+                .body(BodyInserters.fromValue(request)) // Передаем объект запроса как тело запроса
+                .retrieve()
+                .bodyToMono(UserDetailsDTO.class);
+    }
+
+    // http://localhost:8081/user-service/api/users/{email}
+    public Mono<RegisterRequest> findUser_byEmail(String email) {
+        return webClient.get()
+                .uri(uriBuilder ->
+                        uriBuilder.scheme("http")
+                                .host("localhost")
+                                .port(8081)
+                                .path("/user-service/api/users/" + email)
+                                .build())
+                .retrieve()
+                .bodyToMono(RegisterRequest.class);
+    }
+
 }

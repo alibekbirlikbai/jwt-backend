@@ -27,7 +27,26 @@ public class AuthServiceImplement implements AuthService {
 
     @Override
     public AuthResponse register(RegisterRequest request) {
-        return null;
+        UserDetailsDTO user = UserDetailsDTO.builder()
+                .registerRequest(RegisterRequest.builder()
+                        .firstname(request.getFirstname())
+                        .lastname(request.getLastname())
+                        .email(request.getEmail())
+                        .password(passwordEncoder.encode(request.getPassword()))
+                        .role(request.getRole())
+                        .build())
+                .build();
+
+        return userServiceClient.saveUser(user.getRegisterRequest())
+                .flatMap(d -> {
+                    // Если пользователь успешно сохраняется, генерируем JWT token
+                    String jwtToken = jwtServiceImplement.generateToken(user);
+                    System.out.println(jwtToken);
+                    return Mono.just(AuthResponse.builder()
+                            .token(jwtToken)
+                            .build());
+                })
+                .switchIfEmpty(Mono.error(new RuntimeException("-- User not registered! --"))).block(); // Обработка случая, когда пользователь не был сохранен
     }
 
     @Override

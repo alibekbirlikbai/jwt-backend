@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth-service/api/auth")
 public class AuthController {
-    private final AuthServiceImplement service;
+    private final AuthServiceImplement authService;
 
     @Autowired
-    public AuthController(AuthServiceImplement service) {
-        this.service = service;
+    public AuthController(AuthServiceImplement authService) {
+        this.authService = authService;
     }
 
     // Регистрация + Авторизация
+    @PostMapping("/register")
+    public AuthResponse register(@RequestBody RegisterRequest registerRequest) {
+        return authService.register(registerRequest);
+    }
 }
